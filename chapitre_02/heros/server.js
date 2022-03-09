@@ -8,7 +8,11 @@ app.use(function (req, res, next) {
     next(); // call the next function to execute the following routes
     // if removed, the next route never fires
   });
-
+function transformName(req, res, next) {
+  if (req.body.name) {
+      req.body.name = req.body.name.toLowerCase();
+  }
+}
 
 const superHeros = [
     {
@@ -47,7 +51,7 @@ app.get("/heroes", (req, res) => {
 app.get("/heroes/:name", (req, res) => {
     const nameHero = superHeros.find((hero) => {
 		return (
-			hero.name === req.params.name  
+			hero.name.toLowerCase().replace("", "-") === req.params.name.toLowerCase().replace("", "-")
 		);
 	});
 
@@ -63,19 +67,34 @@ app.get("/heroes/:name", (req, res) => {
 app.get("/heroes/:name/powers", (req, res) => {
 
     const powers = superHeros.find((hero) => {
-      return req.params.name === hero.name;
+      return req.params.name.toLowerCase().replace("", "-") === hero.name.toLowerCase().replace("", "-");
     })
   res.json(powers.power);
 });
 
+app.patch("/heroes/:name/powers", (req, res) => {
 
-app.post("/heroes", (req, res) => {
+  const hero = superHeros.find((hero) => {
+    return req.params.name.toLowerCase().replace("", "-") === 
+    hero.name.toLowerCase().replace("", "-");
+  })
+  hero.power.push(req.body.power)
+
+res.json({
+  message:"Power added",
+  hero,});
+});
+
+app.post("/heroes", transformName, (req, res) => {
     superHeros.push({
 		name: req.body.name,
-    power: [req.body.power],
+    power: req.body.power,
 	});
-	res.json(superHeros);
+	res.status(201).res.json({
+    message: "oke, héro ajouté",
+    superHeros});
 });
+
 
 
 // Handle errors

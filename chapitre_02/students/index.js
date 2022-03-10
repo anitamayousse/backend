@@ -1,24 +1,14 @@
 const express = require("express");
 const app = express();
 
-const students = [
-	{
-        id: 1,
-		name: "Anita",
-	},
-	{
-        id: 2,
-		name: "Chi",
-	},
-	{
-        id: 3,
-		name: "Lysiane",
-	},
-	{
-        id: 4,
-		name: "Pauline",
-	},
-];
+app.use(express.json());
+
+app.use((req, res, next) => {
+	console.log("requête reçu");
+	next();
+  });
+
+const students = [];
 
 // Routes
 
@@ -32,7 +22,7 @@ app.post("/students", (req, res) => {
         id: students.length + 1,
 		name: req.body.name,
 	});
-	res.send(students);
+	res.json(students);
 });
 
 

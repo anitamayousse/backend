@@ -48,9 +48,9 @@ router.get("/", (req, res) => {
 
 router.get("/:username", (req, res) => {
 
-
 	res.json("user info: " + 
-	req.params.username);
+	req.params.username
+ );
 });
 
 router.post("/", (req, res) => {

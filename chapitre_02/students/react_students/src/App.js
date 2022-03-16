@@ -1,46 +1,36 @@
 
-import React, {createContext, useState} from 'react';
+import {React, createContext, useState} from 'react';
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import './App.css';
 //css
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.css';
-//Pages
+
 import Home from './views/Home'
 
-export const listsContext = createContext({
-  store: [],
-});
+
+export const listsContext = createContext();
 
 function App() {
 
-  const [store, setStore] = useState([]);
+  const [students, setStudents] = useState([]);
 
   const value = {
-    store: store,
-    setStore: setStore,
+    students: students,
+    setStudents : setStudents,
   }
-
   return (
-    <>
+    <div>
     <listsContext.Provider value={value}>
     <BrowserRouter>
-    <Nav>
-    <nav className="nav navbar-nav ">
-      <Ul className='d-flex'>
-          <Link to="/" className='text-link'>Home</Link>
-      </Ul>
-    </nav>
-    </Nav>
-    <Switch>
-    <Route exact path="/" component={Home} />
-    </Switch>
-      <Footer >
-        <h6 className="text-center text-black">© Made by Anita Mayousse 2022.</h6>
-      </Footer>
+
+        <Switch>
+            <Route exact path='/' component={Home}></Route>
+        </Switch>
+    
     </BrowserRouter>
     </listsContext.Provider>
-    </>
+    </div>
   );
 }
 

@@ -1,5 +1,8 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
+
+const students = require('./data');
 
 app.use(express.json());
 
@@ -8,8 +11,7 @@ app.use((req, res, next) => {
 	next();
   });
 
-const students = [];
-
+  app.use(cors())
 // Routes
 
 app.get("/students", (req, res) => {
@@ -18,11 +20,14 @@ app.get("/students", (req, res) => {
 });
 
 app.post("/students", (req, res) => {
-    students.push({
-        id: students.length + 1,
-		name: req.body.name,
-	});
-	res.json(students);
+
+    console.log("name(s): ", req.body.Name);
+    
+    //Creating a loop to push every name added to the post method;
+    for (let i = 0; i < req.body.Name.length; i++) {
+        students.push(req.body.Name[i]);   
+    }
+    console.log(students);
 });
 
 

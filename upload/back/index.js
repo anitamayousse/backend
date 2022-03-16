@@ -16,4 +16,13 @@ app.post("/user", upload.single("image"), (req, res) => {
 	res.send("Image received");
 });
 
+app.get("/uploads/image.jpeg", upload.single("image"), (req, res) => {
+	fs.renameSync(
+		req.file.path,
+		path.join(req.file.destination, req.file.originalname)
+	);
+
+	res.send("Image received");
+});
+
 app.listen(8000, () => console.log("Listening"));

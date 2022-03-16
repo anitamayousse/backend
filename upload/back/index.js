@@ -3,7 +3,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const app = express();
-const upload = multer({ dest: "./public/uploads/" });
+const upload = multer({ dest: "./public/uploads" });
 
 app.use(express.static("public"));
 

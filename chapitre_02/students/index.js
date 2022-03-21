@@ -1,8 +1,13 @@
 const express = require("express");
+const dotenv = require("dotenv")
+dotenv.config({
+	path: "./config.env",
+});
+const { Pool } = require("pg");
+console.log(Pool);
 const app = express();
+const Postgres = new Pool ({ ssl: { rejectUnauthorized: false }});
 const cors = require('cors');
-
-const students = require('./data');
 
 app.use(express.json());
 
@@ -13,21 +18,31 @@ app.use((req, res, next) => {
 
   app.use(cors())
 // Routes
+//get with SQL
+app.get("/",async (_req, res) => {
+	const students = await Postgres.query ("SELECT * FROM students")
+		console.log(res);
 
-app.get("/students", (req, res) => {
-
-	res.send(students);
+	res.json(students.rows);
 });
 
-app.post("/students", (req, res) => {
+//Post with SQL
+app.post("/students", async(req, res) => {
 
-    console.log("name(s): ", req.body.Name);
-    
-    //Creating a loop to push every name added to the post method;
-    for (let i = 0; i < req.body.Name.length; i++) {
-        students.push(req.body.Name[i]);   
-    }
-    console.log(students);
+	try {
+		await Postgres.query(
+			"INSERT INTO students(name) VALUES($1)",
+			[req.body.name]
+		);
+	} catch (err) {
+		return res.status(400).json({
+			message: "An error happened. Bad data received.",
+		});
+	}
+
+	res.json({
+		message: `Student ${req.body.name} added to the database`,
+	});
 });
 
 

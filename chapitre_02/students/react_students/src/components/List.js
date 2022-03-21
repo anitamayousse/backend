@@ -8,30 +8,27 @@ export default function List() {
     const value = useContext(listsContext)
 
   return (
-      <dv>
+      <div>
         <h1>STUDENTS LIST </h1>
         {
             value.students.map(student => {
                 
-                return  <Names className='names'>{student}</Names> 
+                return  <Name className='names'>{student}</Name> 
     
             })
         }
         {/* </Reveal> */}
-    </dv>
+    </div>
   )
 }
 
 
-const Names = styled.div`
+const Name = styled.div`
     border: 1px solid grey;
-    width: 95%;
     height: 1em;
     margin-bottom: 1%;
     text-align: center;
     padding: 5%;
-    /* background-color: aliceblue; */
-    background-color: blue; 
     color: black;
     font-weight: bold;
     font-size: 1.3em;

@@ -4,6 +4,14 @@ const fs = require("fs");
 const path = require("path");
 const app = express();
 const upload = multer({ dest: "./public/uploads" });
+const cors = require('cors');
+
+app.use((req, res, next) => {
+	console.log("requête reçu");
+	next();
+  });
+
+  app.use(cors())
 
 const users = [
     {

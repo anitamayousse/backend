@@ -1,6 +1,13 @@
 const express = require("express");
+const dotenv = require("dotenv")
+dotenv.config({
+	path: "./config.env",
+});
+const { Pool } = require("pg");
+console.log(Pool);
 const app = express();
 
+const Postgres = new Pool ({ ssl: { rejectUnauthorized: false }});
 const authors = [
 	{
 		name: "Lawrence Nowell",
@@ -28,8 +35,11 @@ const authors = [
 ];
 
 // Routes
-app.get("/", (_req, res) => {
-	res.send("Authors API");
+app.get("/",async (_req, res) => {
+	const authors = await Postgres.query ("SELECT * FROM authors")
+		console.log(res);
+
+	res.json(authors.rows);
 });
 
 app.get("/authors/:id", (req, res) => {
